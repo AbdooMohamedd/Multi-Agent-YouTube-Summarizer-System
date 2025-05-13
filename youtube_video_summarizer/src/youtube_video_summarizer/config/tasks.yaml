@@ -1,0 +1,54 @@
+transcript_task:
+  description: >
+    Extract the transcript from the YouTube video at {youtube_url}.
+    Make sure to retrieve the complete transcript and format it properly.
+  expected_output: >
+    The complete transcript of the YouTube video, properly formatted as markdown text.
+  agent: transcript_extractor
+  output_file: transcript.md
+
+preprocessing_task:
+  description: >
+    Clean and prepare the transcript for summarization. Remove any unnecessary elements like 
+    timestamps, repetitions, filler words, and fix any formatting issues. Ensure the text is 
+    well-structured and ready for summarization.
+  expected_output: >
+    A cleaned and preprocessed version of the transcript that is optimized for summarization.
+  agent: preprocessing_agent
+  context: [transcript_task]
+
+summarization_task:
+  description: >
+    Create a concise summary of the preprocessed transcript that captures all the key points, 
+    main ideas, and important details. The summary should be comprehensive yet significantly 
+    shorter than the original transcript. Organize the summary in a logical structure with 
+    sections, bullet points, or paragraphs as appropriate.
+    
+    Create a professional, well-structured summary with appropriate headings, subheadings, and 
+    formatting. The summary should be ready for direct publication without further editing.
+    Do not include meta-commentary about the summary itself - only include the actual content summary.
+    Give the summary an appropriate title based on the video content.
+  expected_output: >
+    A complete, polished summary of the transcript that accurately represents the 
+    content of the video. The summary should be professionally formatted in markdown with 
+    clear sections, proper headings, and a logical structure.
+  agent: summarization_agent
+  context: [preprocessing_task]
+
+evaluation_task:
+  description: >
+    Evaluate the summary for accuracy, completeness, and faithfulness to the original transcript. 
+    Check that all key points are included, no important information is missing, and no incorrect 
+    information has been added. The summary should be rated on a scale of 1-10, and only summaries 
+    with a score of 7 or higher should be approved. 
+    
+    IMPORTANT: DO NOT include your evaluation in the output file. Instead, if the summary is approved, 
+    pass through the actual summary content exactly as provided by the summarization agent to be saved 
+    as the output file. Only perform the evaluation internally to decide whether to save the summary or not.
+  expected_output: >
+    The actual summary content if approved (score ≥ 7), or a message indicating that the summary was not
+    approved if the score is less than 7. Your evaluation comments should only be printed during execution,
+    not included in the output file.
+  agent: evaluation_agent
+  context: [transcript_task, summarization_task]
+  output_file: summary.md

@@ -1,0 +1,10 @@
+crewai[tools]>=0.28.0
+openai>=1.4.0
+youtube-transcript-api>=0.6.1
+fpdf>=1.7.2
+langchain>=0.0.335
+python-dotenv>=1.0.0
+requests>=2.31.0
+markdown>=3.4.0
+pyyaml>=6.0.0
+beautifulsoup4>=4.12.0

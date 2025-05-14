@@ -2,8 +2,18 @@ transcript_task:
   description: >
     Extract the transcript from the YouTube video at {youtube_url}.
     Make sure to retrieve the complete transcript and format it properly.
+    
+    CRITICAL INSTRUCTION:
+    1. Place ONLY the EXACT raw transcript text in the output file.
+    2. Do NOT add ANY metadata, commentary, placeholders, or descriptions.
+    3. Do NOT include phrases like "[The raw transcript text above]" or similar.
+    4. Do NOT include statements like "The complete transcript is provided above" or similar.
+    5. Do NOT include ANY comments, brackets, or explanatory text.
+    
+    Your output must be ONLY the actual words spoken in the video, exactly as returned by the transcript tool.
+    Just output the raw text from the transcript tool directly to the file without ANY additions.
   expected_output: >
-    The complete transcript of the YouTube video, properly formatted as markdown text.
+    Only the raw transcript text exactly as retrieved by the transcript tool, with no modifications or additions whatsoever.
   agent: transcript_extractor
   output_file: transcript.md
 
@@ -19,36 +29,55 @@ preprocessing_task:
 
 summarization_task:
   description: >
-    Create a concise summary of the preprocessed transcript that captures all the key points, 
-    main ideas, and important details. The summary should be comprehensive yet significantly 
-    shorter than the original transcript. Organize the summary in a logical structure with 
-    sections, bullet points, or paragraphs as appropriate.
+    Your Task: Create a High-Quality Professional Summary
     
-    Create a professional, well-structured summary with appropriate headings, subheadings, and 
-    formatting. The summary should be ready for direct publication without further editing.
-    Do not include meta-commentary about the summary itself - only include the actual content summary.
-    Give the summary an appropriate title based on the video content.
+    You are an expert content summarizer with extensive experience in creating concise, comprehensive summaries.
+    
+    Instructions:
+    1. Create a well-structured, comprehensive summary of the transcript that captures ALL key points, main ideas, and important details.
+    2. Use proper markdown formatting with clear headings (# for main title, ## for sections, ### for subsections).
+    3. Include bullet points for lists and emphasis (**bold**) for important concepts.
+    4. Organize the content logically with a clear introduction, body sections, and conclusion.
+    5. Make sure your summary is accurate, complete, and significantly shorter than the original transcript.
+    6. Give the summary a descriptive, professional title that clearly indicates the subject matter.
+    7. Use professional language suitable for academic or business contexts.
+    8. Include all important facts, figures, examples, and key terminology from the original.
+    9. Do not include any meta-commentary about the summary itself - only include the actual content.
+    
+    Your summary must be thorough enough to serve as a complete replacement for someone who hasn't watched the video.
   expected_output: >
-    A complete, polished summary of the transcript that accurately represents the 
-    content of the video. The summary should be professionally formatted in markdown with 
-    clear sections, proper headings, and a logical structure.
+    A professionally formatted markdown summary with proper headings, logical structure, and comprehensive coverage of all important information from the transcript. The summary should be accurate, well-organized, and complete enough to achieve at least an 8/10 evaluation score.
   agent: summarization_agent
   context: [preprocessing_task]
 
 evaluation_task:
   description: >
-    Evaluate the summary for accuracy, completeness, and faithfulness to the original transcript. 
-    Check that all key points are included, no important information is missing, and no incorrect 
-    information has been added. The summary should be rated on a scale of 1-10, and only summaries 
-    with a score of 7 or higher should be approved. 
+    Evaluation Task: Assess Summary Quality and Accuracy
     
-    IMPORTANT: DO NOT include your evaluation in the output file. Instead, if the summary is approved, 
-    pass through the actual summary content exactly as provided by the summarization agent to be saved 
-    as the output file. Only perform the evaluation internally to decide whether to save the summary or not.
+    You are a rigorous content evaluator responsible for ensuring only high-quality summaries are approved.
+    
+    Instructions:
+    1. Carefully compare the summary against the original transcript.
+    2. Evaluate the summary on these criteria:
+       - Completeness: Does it include ALL key points from the original?
+       - Accuracy: Is all information factually correct?
+       - Organization: Is it logically structured with proper headings?
+       - Formatting: Does it use proper markdown formatting?
+       - Clarity: Is the writing clear and professional?
+       
+    3. Score the summary on a scale of 1-10 based on these criteria.
+    4. Important Decision Point:
+       - If the score is 7 or higher: APPROVE the summary and output it EXACTLY as submitted
+       - If the score is below 7: REJECT the summary and output ONLY the text "The summary wasn't approved"
+       
+    5. CRITICAL: Your evaluation comments should NOT be included in the output file - the output should ONLY be either:
+       - The complete, unmodified summary (if approved)
+       - The exact text "The summary wasn't approved" (if rejected)
+       
+    6. Remember that a score of 7+ means the summary meets professional standards and contains all key information.
   expected_output: >
-    The actual summary content if approved (score ≥ 7), or a message indicating that the summary was not
-    approved if the score is less than 7. Your evaluation comments should only be printed during execution,
-    not included in the output file.
+    If approved (score ≥ 7): The complete, unmodified summary text exactly as provided.
+    If rejected (score < 7): Only the text "The summary wasn't approved" with no additional commentary.
   agent: evaluation_agent
   context: [transcript_task, summarization_task]
   output_file: summary.md

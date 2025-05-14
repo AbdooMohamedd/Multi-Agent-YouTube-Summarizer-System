@@ -1,11 +1,24 @@
 [project]
 name = "youtube_video_summarizer"
 version = "0.1.0"
-description = "YouTube-Video-summarizer using crewAI"
-authors = [{ name = "Your Name", email = "you@example.com" }]
+description = "YouTube-Video-summarizer using crewAI - Extract, process, summarize and convert video content to PDF"
+authors = [{ name = "Abdelrahman Mohamed", email = "abdelrahman.mohamed1081@gmail.com" }]
+readme = "../README.md"
+license = { text = "MIT" }
+keywords = ["youtube", "summarizer", "crewai", "ai", "transcript"]
 requires-python = ">=3.10,<3.13"
 dependencies = [
-    "crewai[tools]>=0.119.0,<1.0.0"
+    "crewai[tools]>=0.28.0",
+    "openai>=1.4.0",
+    "youtube-transcript-api>=0.6.1",
+    "markdown-pdf>=0.1.0",
+    "python-dotenv>=1.0.0",
+    "fpdf>=1.7.2",
+    "langchain>=0.0.335",
+    "requests>=2.31.0",
+    "markdown>=3.4.0",
+    "pyyaml>=6.0.0",
+    "beautifulsoup4>=4.12.0"
 ]
 
 [project.scripts]

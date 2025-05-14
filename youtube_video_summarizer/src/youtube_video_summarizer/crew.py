@@ -35,7 +35,6 @@ class YoutubeVideoSummarizer():
             config=self.agents_config['summarization_agent'], 
             verbose=True
         )
-    
     @agent
     def evaluation_agent(self) -> Agent:
         return Agent(
@@ -60,7 +59,6 @@ class YoutubeVideoSummarizer():
         return Task(
             config=self.tasks_config['summarization_task'], 
         )
-    
     @task
     def evaluation_task(self) -> Task:
         return Task(
@@ -72,7 +70,7 @@ class YoutubeVideoSummarizer():
         """Creates the YoutubeVideoSummarizer crew for transcript extraction"""
         return Crew(
             agents=self.agents,
-            tasks=self.tasks, # ]r
+            tasks=self.tasks, 
             process=Process.sequential,
             verbose=True
         )

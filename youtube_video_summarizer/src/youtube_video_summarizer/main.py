@@ -14,7 +14,6 @@ sys.path.insert(0, parent_dir)
 try:
     from crew import YoutubeVideoSummarizer
 except ImportError:
-    # Fall back to relative import
     from .crew import YoutubeVideoSummarizer
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -39,7 +38,39 @@ def run(youtube_url=None):
         print(f"Extracting transcript from: {youtube_url}")
         print(f"Inputs dictionary: {inputs}")
         YoutubeVideoSummarizer().crew().kickoff(inputs=inputs)
-        print(f"Raw transcript extraction complete. Saved to 'transcript.md'")
+        
+        # Generate PDF directly after summary.md is created
+        print("Generating PDF from summary.md...")
+        try:
+            from markdown_pdf import MarkdownPdf, Section
+            
+            # Get the path to summary.md
+            current_file = inspect.getfile(inspect.currentframe())
+            current_dir = os.path.dirname(os.path.abspath(current_file))
+            parent_dir = os.path.dirname(os.path.dirname(current_dir))
+            summary_md_path = os.path.join(parent_dir, "summary.md")
+            summary_pdf_path = os.path.join(parent_dir, "summary.pdf")
+            
+            # Initialize the PDF converter
+            pdf = MarkdownPdf(toc_level=2, optimize=True)
+
+            # Read the Markdown content
+            with open(summary_md_path, "r", encoding="utf-8") as f:
+                markdown_text = f.read()
+            pdf.add_section(Section(markdown_text))
+
+            # Save the PDF
+            pdf.save(summary_pdf_path)
+            print(f"PDF successfully generated at: {summary_pdf_path}")
+        except ImportError:
+            print("Warning: markdown-pdf package not found. Please install it with: pip install markdown-pdf")
+        except Exception as pdf_error:
+            print(f"Error generating PDF: {pdf_error}")
+        
+        print(f"Process completed successfully:")
+        print(f"- Raw transcript saved to 'transcript.md'")
+        print(f"- Summary saved to 'summary.md'")
+        print(f"- PDF export saved to 'summary.pdf'")
     except Exception as e:
         raise Exception(f"An error occurred while extracting the transcript: {e}")
 

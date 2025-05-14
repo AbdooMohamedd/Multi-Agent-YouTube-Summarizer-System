@@ -1,108 +1,83 @@
-# 🧠 Multi-Agent YouTube Summarizer System (CrewAI-Based)
+# 🧠 Multi-Agent YouTube Video Summarizer
 
-## 📌 Objective
+![YouTube Video Summarizer Banner](path/to/banner/image.png)
 
-Build a multi-agent system using **CrewAI** that:
+## 📋 Overview
 
-1. Accepts a YouTube video URL
-2. Extracts the transcript
-3. Cleans and preprocesses the transcript
-4. Summarizes the video content
-5. Evaluates the summary’s accuracy
-6. Saves the final summary to a `.md` file named after the video title
-7. Converts the `.md` file into a PDF saved in the project directory
+This system uses CrewAI's multi-agent architecture to transform YouTube videos into concise, professional summaries with minimal user input. Perfect for researchers, students, and professionals who need to quickly extract valuable information from video content.
 
----
+## 🚀 What This System Does
 
-## ⚙️ Technology Stack
+The YouTube Video Summarizer automates the entire process of:
 
-- Python 3.10+
-- CrewAI
-- youtube-transcript-api (for transcript extraction)
-- OpenAI API (for summarization and evaluation)
-- Markdown & PDF libraries (like `markdown`, `fpdf`, or `pdfkit`)
-- LangChain (optional)
+1. Extracting the complete transcript from any YouTube video
+2. Cleaning and preprocessing the raw transcript
+3. Creating a professional, well-structured summary
+4. Evaluating the summary for accuracy and completeness
+5. Generating a PDF document of the approved summary
 
----
+All with just one command and a YouTube URL!
 
-## 🧩 System Design: 5 Agents
+## 🔄 Workflow
 
-### ✅ Agent 1: Transcript Agent
+```
+YouTube URL → Extract Transcript → Preprocess → Summarize → Evaluate → Generate PDF
+```
 
-- **Role:** Extract transcript from the YouTube video.
-- **Input:** YouTube video URL
-- **Output:** Raw transcript text
-- **Tools:** `youtube-transcript-api`
+1. **Input**: User provides a YouTube video URL
+2. **Extraction**: System pulls the complete transcript from the video
+3. **Preprocessing**: Raw transcript is cleaned and formatted
+4. **Summarization**: AI generates a comprehensive, structured summary
+5. **Evaluation**: Summary is assessed for quality and completeness
+6. **Output**: Approved summaries are saved as both Markdown and PDF
 
----
+## 👥 Agent System Design
 
-### ✅ Agent 2: Preprocessing Agent
+This project uses a specialized team of 5 AI agents, each with a dedicated role:
 
-- **Role:** Clean and preprocess the raw transcript.
-- **Input:** Raw transcript text
-- **Output:** Cleaned transcript
-- **Notes:** Removes timestamps and formats the text for summarization.
+### 1. Transcript Extractor Agent
 
----
+- **Task**: Extract the complete transcript from a YouTube video
+- **Input**: YouTube URL
+- **Output**: Raw transcript text (saved to `transcript.md`)
+- **Tools**: `youtube-transcript-api`
 
-### ✅ Agent 3: Summarization Agent
+### 2. Preprocessing Agent
 
-- **Role:** Generate a summary from the cleaned transcript.
-- **Input:** Cleaned transcript
-- **Output:** Text summary
-- **Notes:** Uses OpenAI GPT for generating summaries.
+- **Task**: Clean and prepare the transcript for summarization
+- **Input**: Raw transcript from Agent 1
+- **Output**: Cleaned, well-formatted text
+- **Process**: Removes timestamps, repetitions, filler words, and fixes formatting issues
 
----
+### 3. Summarization Agent
 
-### ✅ Agent 4: Accuracy Evaluator & Markdown Saver Agent
+- **Task**: Generate a comprehensive, well-structured summary
+- **Input**: Preprocessed transcript from Agent 2
+- **Output**: Professional summary with headings, sections, and key points
+- **Features**: Creates markdown formatting, proper structure, and logical organization
 
-- **Role:**
-  1. Evaluate the accuracy of the summary against the original transcript.
-  2. If the summary is acceptable, save it as a Markdown file.
-- **Input:** Transcript + Summary
-- **Output:** `Youtube_video_title.md` file containing the final summary
-- **Notes:** Summary must pass a quality threshold (e.g., 7/10 or higher score) before saving.
+### 4. Evaluation Agent
 
----
+- **Task**: Assess summary quality and accuracy
+- **Input**: Original transcript and generated summary
+- **Output**: Approved summary (saved to `summary.md`) or rejection message
+- **Quality Standard**: Only approves summaries scoring 7/10 or higher
 
-### ✅ Agent 5: PDF Export Agent
+### 5. PDF Generation
 
-- **Role:** Convert the saved Markdown file into a PDF.
-- **Input:** `Youtube_video_title.md`
-- **Output:** `Youtube_video_title.pdf` in the same project folder
-- **Notes:** Uses PDF generation libraries to render the Markdown to PDF.
+- **Task**: Convert the approved markdown summary to a professional PDF
+- **Input**: `summary.md` file
+- **Output**: `summary.pdf` in the project directory
+- **Tools**: `markdown-pdf` library
 
----
-
-## 🔁 Workflow Steps
-
-1. User inputs a YouTube URL.
-2. **Agent 1** extracts the transcript.
-3. **Agent 2** cleans and formats the transcript.
-4. **Agent 3** generates a summary.
-5. **Agent 4** evaluates the summary:
-   - If it passes, saves it to `Youtube_video_title.md`
-   - If it fails, stops the workflow or loops back for revision.
-6. **Agent 5** converts the `.md` file to `Youtube_video_title.pdf`.
-
----
-
-## ✅ Output
-
-- Accurate video summary in `.md` format.
-- Matching `.pdf` version of the summary.
-- Saved in the project directory, named after the video title.
-
----
-
-## 🚀 Getting Started
+## 💻 How to Run the System
 
 ### Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/yourusername/Multi-Agent-YouTube-Summarizer-System.git
+   ```powershell
+   git clone https://github.com/AbdooMohamedd/Multi-Agent-YouTube-Summarizer-System.git
    cd Multi-Agent-YouTube-Summarizer-System
    ```
 
@@ -110,107 +85,67 @@ Build a multi-agent system using **CrewAI** that:
 
    ```powershell
    python -m venv venv
-   # On Windows with PowerShell
    .\venv\Scripts\Activate.ps1
-   # On Windows with Command Prompt
-   # venv\Scripts\activate.bat
-   # On macOS/Linux
-   # source venv/bin/activate
    ```
 
 3. Install dependencies:
 
-   ```bash
+   ```powershell
    pip install -r requirements.txt
    ```
 
 4. Set up your OpenAI API key:
    - Create a `.env` file in the root directory
-   - Add your OpenAI API key: `OPENAI_API_KEY=your_api_key_here`
+   - Add your API key: `OPENAI_API_KEY=your_api_key_here`
 
 ### Usage
 
-There are multiple ways to run the system:
-
-#### Option 1: Use the CLI tool (Recommended)
-
-The CLI tool provides a friendly interface with validation checks:
+Run the system with the following command:
 
 ```powershell
-# Check if your environment is properly set up
-python -m multi_agent_youtube_summarizer_system.cli check
-
-# Run the tests to verify functionality
-python -m multi_agent_youtube_summarizer_system.cli test
-
-# Run the integration test
-python -m multi_agent_youtube_summarizer_system.cli test --integration
-
-# Summarize a YouTube video
-python -m multi_agent_youtube_summarizer_system.cli summarize "https://www.youtube.com/watch?v=VIDEO_ID"
+python .\src\youtube_video_summarizer\main.py --url "https://www.youtube.com/watch?v=OKuu2BVfMhM"
 ```
 
-#### Option 2: Use the module directly
+## 🧪 Test Results
 
-Run the system with a YouTube URL:
+We've successfully tested the system on this YouTube video:
+[https://www.youtube.com/watch?v=OKuu2BVfMhM](https://www.youtube.com/watch?v=OKuu2BVfMhM)
 
-```powershell
-python -m multi_agent_youtube_summarizer_system.main "https://www.youtube.com/watch?v=VIDEO_ID"
-```
+The summary and PDF were automatically generated and saved to the project directory.
 
-#### Option 3: Use the convenience scripts
+You can find the generated PDF at: `youtube_video_summarizer/summary.pdf`
 
-For Windows:
+Here's a preview of the generated PDF:
 
-```powershell
-.\run.bat "https://www.youtube.com/watch?v=VIDEO_ID"
-```
+![Generated PDF Preview](path/to/pdf/screenshot.png)
 
-For Linux/macOS:
+## ✅ Project Outputs
 
-```bash
-./run.sh "https://www.youtube.com/watch?v=VIDEO_ID"
-```
+For each video, the system produces:
 
-The system will:
+- `transcript.md` - The raw transcript extracted from the video
+- `summary.md` - The cleaned, professionally formatted summary
+- `summary.pdf` - A PDF version of the summary for easy sharing
 
-1. Extract the transcript from the YouTube video
-2. Process and summarize the content
-3. Save the summary as both `.md` and `.pdf` files in the project directory
+## 🔧 Technical Details
 
-### Example
+- **Python Version**: 3.10+
+- **Key Dependencies**:
+  - CrewAI for the multi-agent architecture
+  - OpenAI API for summarization and evaluation
+  - youtube-transcript-api for transcript extraction
+  - markdown-pdf for PDF generation
 
-```powershell
-python -m multi_agent_youtube_summarizer_system.cli summarize "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-```
-
-## 🐳 Docker Support
-
-You can also run the system using Docker:
-
-### Build the Docker image
-
-```powershell
-docker build -t youtube-summarizer .
-```
-
-### Run with Docker
-
-```powershell
-docker run --rm -v ${PWD}/output:/app/output -e OPENAI_API_KEY=your_api_key_here youtube-summarizer summarize "https://www.youtube.com/watch?v=VIDEO_ID"
-```
-
-### Run with Docker Compose
-
-1. Create a `.env` file with your OpenAI API key
-2. Run the following command:
-
-```powershell
-$env:YOUTUBE_URL="https://www.youtube.com/watch?v=VIDEO_ID"; docker-compose up
-```
-
-Output files will be saved in the `output` directory.
-
-## ⚖️ License
+## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+
+- CrewAI for the multi-agent framework
+- OpenAI for the language processing capabilities
+- YouTube API for transcript access
+
+## 📬 Contact
+
+For questions or feedback, please open an issue on the GitHub repository or contact the project maintainer.

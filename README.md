@@ -1,6 +1,6 @@
 # 🧠 Multi-Agent YouTube Video Summarizer
 
-![YouTube Video Summarizer Banner](path/to/banner/image.png)
+![YouTube Video Summarizer Banner](https://github.com/AbdooMohamedd/Multi-Agent-YouTube-Summarizer-System/blob/main/YouTube-Video-Summarizer-System-Flowchart.png)
 
 ## 📋 Overview
 

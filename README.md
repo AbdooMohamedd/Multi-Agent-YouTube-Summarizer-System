@@ -115,8 +115,8 @@ The summary and PDF were automatically generated and saved to the project direct
 
 You can find the generated PDF at: `youtube_video_summarizer/summary.pdf`
 
-Here's a preview of the generated PDF:
-[Generated PDF Preview]((https://github.com/AbdooMohamedd/Multi-Agent-YouTube-Summarizer-System/blob/main/youtube_video_summarizer/summary.pdf))
+Here's a preview of the generated PDF:  
+[Generated PDF Preview](https://github.com/AbdooMohamedd/Multi-Agent-YouTube-Summarizer-System/blob/main/youtube_video_summarizer/summary.pdf)
 
 ## ✅ Project Outputs
 
